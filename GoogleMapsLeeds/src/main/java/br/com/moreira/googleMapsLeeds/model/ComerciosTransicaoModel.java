@@ -3,6 +3,7 @@ package br.com.moreira.googleMapsLeeds.model;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "db_comercios_transicao")
 public class ComerciosTransicaoModel {
@@ -17,11 +18,11 @@ public class ComerciosTransicaoModel {
     private String contato;
     @Column(name = "c_site", unique = true)
     private String site;
-    @Column(name = "c_ctt_realizado")
+    @Column(name = "ctt_realizado")
     private Boolean cttRealizado;
     @Column(name = "c_cidade")
     private String cidade;
-    @Column(name = "c_possui_wpp")
+    @Column(name = "possui_wpp")
     private Boolean possuiWpp;
 
     //Construtores
