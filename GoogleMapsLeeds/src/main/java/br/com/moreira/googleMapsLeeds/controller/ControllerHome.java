@@ -4,6 +4,7 @@ import br.com.moreira.googleMapsLeeds.infra.Factory;
 import br.com.moreira.googleMapsLeeds.service.ServiceHome;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.util.List;
 
 public class ControllerHome {
@@ -15,9 +16,10 @@ public class ControllerHome {
         this.serviceHome = new ServiceHome(em);
     }
 
-//    public void BuscaLocal(String location){
-//        //Acionar NearbySearch a partir da location recebida
-          //Acionar AddCommerceListInDataBase passando a lista retornada de NearbySearch para adicionar as informações a tabela de transicao
-//    }
+    public void BuscaLocal(String location) throws IOException, InterruptedException {
+        //Acionar NearbySearch a partir da location recebida
+        System.out.println(serviceHome.NearbySearch(location));
+        //Acionar AddCommerceListInDataBase passando a lista retornada de NearbySearch para adicionar as informações a tabela de transicao
+    }
 
 }
