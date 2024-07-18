@@ -1,6 +1,8 @@
 package br.com.moreira.googleMapsLeeds.model;
 
 
+import br.com.moreira.googleMapsLeeds.DTO.PlaceDetailsDTO;
+
 import javax.persistence.*;
 
 
@@ -28,6 +30,19 @@ public class ComerciosTransicaoModel {
     //Construtores
     public ComerciosTransicaoModel(){
 
+    }
+
+    public ComerciosTransicaoModel(PlaceDetailsDTO data){
+        this.nome = data.getResult().getName();
+        this.segmento = data.getResult().getTypes().get(1);
+        this.contato = data.getResult().getPhoneNumber();
+        this.site = data.getResult().getSite();
+        this.cttRealizado = false;
+
+        var city = data.getResult().getAddresComponents().get(4).getLong_name();
+        this.cidade = city;
+
+        this.possuiWpp = false;
     }
 
     public ComerciosTransicaoModel(String id, String nome, String segmento, String contato, String site, Boolean cttRealizado, String cidade, Boolean possuiWpp){

@@ -1,6 +1,7 @@
 package br.com.moreira.googleMapsLeeds.controller;
 
 import br.com.moreira.googleMapsLeeds.infra.Factory;
+import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
 import br.com.moreira.googleMapsLeeds.service.ServiceHome;
 
 import javax.persistence.EntityManager;
@@ -17,9 +18,13 @@ public class ControllerHome {
     }
 
     public void BuscaLocal(String location) throws IOException, InterruptedException {
-        //Acionar NearbySearch a partir da location recebida
-        System.out.println(serviceHome.NearbySearch(location));
-        //Acionar AddCommerceListInDataBase passando a lista retornada de NearbySearch para adicionar as informações a tabela de transicao
+        List<String> commerceList = serviceHome.NearbySearch(location);
+        for(String commerce : commerceList){
+            System.out.println(commerce);
+            ComerciosTransicaoModel commerceDetails = serviceHome.PlaceDetails(commerce);
+            System.out.println(commerceDetails.getNome());
+            serviceHome.AddCommerceListInDataBase(commerceDetails);
+        }
     }
 
 }

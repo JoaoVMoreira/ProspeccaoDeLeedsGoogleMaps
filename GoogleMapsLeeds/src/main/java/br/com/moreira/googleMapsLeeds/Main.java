@@ -8,6 +8,6 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         ControllerHome controller = new ControllerHome();
-        controller.BuscaLocal("-23.550520,-46.633308");
+        controller.BuscaLocal("-23.618891908092493,-46.849262567204946");
     }
 }
