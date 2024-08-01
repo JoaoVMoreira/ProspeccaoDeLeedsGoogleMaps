@@ -6,7 +6,7 @@ import br.com.moreira.googleMapsLeeds.DTO.PlaceDetailsDTO;
 import javax.persistence.*;
 
 
-@Entity
+@Entity(name = "comercioTransacao")
 @Table(name = "db_comercios_transicao")
 public class ComerciosTransicaoModel {
     @Id
@@ -38,10 +38,8 @@ public class ComerciosTransicaoModel {
         this.contato = data.getResult().getPhoneNumber();
         this.site = data.getResult().getSite();
         this.cttRealizado = false;
-
         var city = data.getResult().getAddresComponents().get(4).getLong_name();
         this.cidade = city;
-
         this.possuiWpp = false;
     }
 
@@ -121,4 +119,17 @@ public class ComerciosTransicaoModel {
         this.possuiWpp = possuiWpp;
     }
 
+    @Override
+    public String toString() {
+        return "ComercioTransicaoModel{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", segmento='" + segmento + '\'' +
+                ", contato='" + contato + '\'' +
+                ", site='" + site + '\'' +
+                ", cttRealizado=" + cttRealizado +
+                ", cidade='" + cidade + '\'' +
+                ", possuiWpp=" + possuiWpp +
+                '}';
+    }
 }

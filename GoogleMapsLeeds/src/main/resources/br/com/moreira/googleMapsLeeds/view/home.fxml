@@ -35,8 +35,8 @@
             </Button>
          </children>
       </AnchorPane>
-      <TextField layoutX="163.0" layoutY="25.0" prefHeight="60.0" prefWidth="550.0" style="-fx-background-color: #E2E2E2;" />
-      <Button layoutX="740.0" layoutY="24.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #003AE8; -fx-border-color: white; -fx-border-width: 2;" text="INICIAR" textFill="WHITE">
+      <TextField fx:id="coordText" layoutX="163.0" layoutY="25.0" prefHeight="60.0" prefWidth="550.0" style="-fx-background-color: #E2E2E2;" />
+      <Button layoutX="740.0" layoutY="24.0" mnemonicParsing="false" onAction="#buscarComercios" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #003AE8; -fx-border-color: white; -fx-border-width: 2;" text="INICIAR" textFill="WHITE">
          <font>
             <Font name="Arial Black" size="27.0" />
          </font>
@@ -46,13 +46,13 @@
             <Font name="Arial Black" size="26.0" />
          </font>
       </Button>
-      <TableView editable="true" layoutX="163.0" layoutY="106.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="486.0" prefWidth="1000.0" style="-fx-background-color: #E2E2E2;">
+      <TableView fx:id="tableCommerce" editable="true" layoutX="163.0" layoutY="106.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="486.0" prefWidth="1000.0" style="-fx-background-color: #E2E2E2;">
         <columns>
-          <TableColumn prefWidth="504.0" text="NOME" />
-          <TableColumn prefWidth="494.0" text="SEGMENTO" />
-            <TableColumn prefWidth="504.0" text="CIDADE" />
-            <TableColumn prefWidth="504.0" text="CONTATO" />
-            <TableColumn prefWidth="504.0" text="SITE" />
+          <TableColumn fx:id="colNome" prefWidth="504.0" text="NOME" />
+          <TableColumn fx:id="colSegmento" prefWidth="494.0" text="SEGMENTO" />
+            <TableColumn fx:id="colCidade" prefWidth="504.0" text="CIDADE" />
+            <TableColumn fx:id="colNumero" prefWidth="504.0" text="CONTATO" />
+            <TableColumn fx:id="colSite" prefWidth="504.0" text="SITE" />
         </columns>
          <cursor>
             <Cursor fx:constant="HAND" />

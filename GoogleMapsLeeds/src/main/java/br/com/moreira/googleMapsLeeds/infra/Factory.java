@@ -10,4 +10,8 @@ public class Factory {
     public static EntityManager getFactory(){
         return FACTORY.createEntityManager();
     }
+
+    public static EntityManagerFactory getEntityManagerFactory(){
+        return FACTORY;
+    }
 }

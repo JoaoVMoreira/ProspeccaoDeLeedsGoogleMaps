@@ -1,5 +1,7 @@
 package br.com.moreira.googleMapsLeeds;
 
+import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
+import br.com.moreira.googleMapsLeeds.controller.ControllerHome;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,8 +25,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        //ControllerHome controller = new ControllerHome();
-        //controller.BuscaLocal("-23.618891908092493,-46.849262567204946");
         launch(args);
     }
 

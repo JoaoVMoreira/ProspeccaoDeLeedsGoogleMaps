@@ -1,30 +1,39 @@
 package br.com.moreira.googleMapsLeeds.controller;
 
+import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
 import br.com.moreira.googleMapsLeeds.infra.Factory;
 import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
+import br.com.moreira.googleMapsLeeds.service.ComerciosTransicaoService;
 import br.com.moreira.googleMapsLeeds.service.ServiceHome;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.util.List;
 
 public class ControllerHome {
-    private EntityManager entityManager;
     private ServiceHome serviceHome;
+    private ComerciosTransicaoService comerciosTransicaoService;
+    private EntityManagerFactory entityManagerFactory;
 
     public ControllerHome(){
-        EntityManager em = Factory.getFactory();
-        this.serviceHome = new ServiceHome(em);
+        this.entityManagerFactory = Factory.getEntityManagerFactory();
+        this.serviceHome = new ServiceHome();
+        this.comerciosTransicaoService = new ComerciosTransicaoService(entityManagerFactory);
     }
 
     public void BuscaLocal(String location) throws IOException, InterruptedException {
+        System.out.println("Buscar local iniciado");
         List<String> commerceList = serviceHome.NearbySearch(location);
         for(String commerce : commerceList){
-            System.out.println(commerce);
             ComerciosTransicaoModel commerceDetails = serviceHome.PlaceDetails(commerce);
-            System.out.println(commerceDetails.getNome());
-            serviceHome.AddCommerceListInDataBase(commerceDetails);
+            comerciosTransicaoService.AddCommerceListInDataBase(commerceDetails);
         }
+    }
+
+    public List<ComerciosTransicaoDTO> listarComerciosTransicao(){
+        List<ComerciosTransicaoDTO> comercios = comerciosTransicaoService.listar();
+        return comercios;
     }
 
 }

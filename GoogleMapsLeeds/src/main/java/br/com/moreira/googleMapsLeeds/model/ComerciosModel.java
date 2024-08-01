@@ -2,7 +2,7 @@ package br.com.moreira.googleMapsLeeds.model;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "comercio")
 @Table(name = "db_comercio")
 public class ComerciosModel {
 
