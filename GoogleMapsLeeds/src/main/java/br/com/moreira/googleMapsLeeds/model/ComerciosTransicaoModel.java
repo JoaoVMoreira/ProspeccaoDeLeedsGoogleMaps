@@ -38,7 +38,7 @@ public class ComerciosTransicaoModel {
         this.contato = data.getResult().getPhoneNumber();
         this.site = data.getResult().getSite();
         this.cttRealizado = false;
-        var city = data.getResult().getAddresComponents().get(4).getLong_name();
+        var city = data.getResult().getAddresComponents().get(3).getLong_name();
         this.cidade = city;
         this.possuiWpp = false;
     }

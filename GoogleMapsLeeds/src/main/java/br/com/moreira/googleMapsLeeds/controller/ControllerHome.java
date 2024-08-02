@@ -6,12 +6,12 @@ import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
 import br.com.moreira.googleMapsLeeds.service.ComerciosTransicaoService;
 import br.com.moreira.googleMapsLeeds.service.ServiceHome;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ControllerHome {
+public class ControllerHome{
     private ServiceHome serviceHome;
     private ComerciosTransicaoService comerciosTransicaoService;
     private EntityManagerFactory entityManagerFactory;
@@ -22,17 +22,22 @@ public class ControllerHome {
         this.comerciosTransicaoService = new ComerciosTransicaoService(entityManagerFactory);
     }
 
-    public void BuscaLocal(String location) throws IOException, InterruptedException {
-        System.out.println("Buscar local iniciado");
+    public void BuscaLocal(String location, AtomicBoolean interromperThread) throws IOException, InterruptedException {
         List<String> commerceList = serviceHome.NearbySearch(location);
         for(String commerce : commerceList){
+            if(interromperThread.get()){
+                System.out.println("Processo interrompido");
+                return;
+            }
             ComerciosTransicaoModel commerceDetails = serviceHome.PlaceDetails(commerce);
             comerciosTransicaoService.AddCommerceListInDataBase(commerceDetails);
         }
+        System.out.println("PROCESSO FINALIZADO");
     }
 
     public List<ComerciosTransicaoDTO> listarComerciosTransicao(){
         List<ComerciosTransicaoDTO> comercios = comerciosTransicaoService.listar();
+        System.out.println("LISTAGEM DE COMERCIOS REALIZADA");
         return comercios;
     }
 

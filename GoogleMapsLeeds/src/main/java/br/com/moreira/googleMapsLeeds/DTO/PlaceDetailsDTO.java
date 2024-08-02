@@ -78,16 +78,6 @@ public class PlaceDetailsDTO {
             this.addresComponents = addresComponents;
         }
 
-        @Override
-        public String toString() {
-            return "Result{" +
-                    "name='" + name + '\'' +
-                    ", types=" + types +
-                    ", phoneNumber='" + phoneNumber + '\'' +
-                    ", addresComponents=" + addresComponents +
-                    '}';
-        }
-
         @JsonIgnoreProperties(ignoreUnknown = true)
         public static class AddresComponent{
             @JsonProperty("long_name")
@@ -101,14 +91,6 @@ public class PlaceDetailsDTO {
 
             public void setLong_name(String long_name) {
                 this.long_name = long_name;
-            }
-
-            @Override
-            public String toString() {
-                return "AddresComponent{" +
-                        "long_name='" + long_name + '\'' +
-                        ", short_name='" + short_name + '\'' +
-                        '}';
             }
         }
     }

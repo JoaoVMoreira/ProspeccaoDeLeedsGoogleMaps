@@ -12,8 +12,4 @@ public class NextPageDTO {
     public String getNextPage() {
         return nextPage;
     }
-
-    public void setNextPage(String nextPage) {
-        this.nextPage = nextPage;
-    }
 }

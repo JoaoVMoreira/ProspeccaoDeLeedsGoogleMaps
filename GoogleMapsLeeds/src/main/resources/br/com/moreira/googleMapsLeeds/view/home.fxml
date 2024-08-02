@@ -36,12 +36,12 @@
          </children>
       </AnchorPane>
       <TextField fx:id="coordText" layoutX="163.0" layoutY="25.0" prefHeight="60.0" prefWidth="550.0" style="-fx-background-color: #E2E2E2;" />
-      <Button layoutX="740.0" layoutY="24.0" mnemonicParsing="false" onAction="#buscarComercios" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #003AE8; -fx-border-color: white; -fx-border-width: 2;" text="INICIAR" textFill="WHITE">
+      <Button fx:id="startButton" layoutX="740.0" layoutY="24.0" mnemonicParsing="false" onAction="#buscarComercios" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #003AE8; -fx-border-color: white; -fx-border-width: 2;" text="INICIAR" textFill="WHITE">
          <font>
             <Font name="Arial Black" size="27.0" />
          </font>
       </Button>
-      <Button layoutX="963.0" layoutY="25.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #E60023; -fx-border-color: white; -fx-border-width: 2;" text="CANCELAR" textFill="WHITE">
+      <Button layoutX="963.0" layoutY="25.0" mnemonicParsing="false" onAction="#cancelarBusca" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #E60023; -fx-border-color: white; -fx-border-width: 2;" text="CANCELAR" textFill="WHITE">
          <font>
             <Font name="Arial Black" size="26.0" />
          </font>

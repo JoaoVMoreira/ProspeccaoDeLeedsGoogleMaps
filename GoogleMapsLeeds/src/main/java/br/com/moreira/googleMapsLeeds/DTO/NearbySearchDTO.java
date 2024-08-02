@@ -16,10 +16,6 @@ public class NearbySearchDTO {
         return result;
     }
 
-    public void setResult(List<Result> result){
-        this.result = result;
-    }
-
     @Override
     public String toString() {
         return "NearbySearchDTO{" +
@@ -35,10 +31,6 @@ public class NearbySearchDTO {
 
         public String getPlace_id(){
             return place_id;
-        }
-
-        public void setPlace_id(String place_id){
-            this.place_id = place_id;
         }
 
         @Override

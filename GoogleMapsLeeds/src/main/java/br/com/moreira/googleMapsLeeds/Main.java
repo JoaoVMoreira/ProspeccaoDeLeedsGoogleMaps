@@ -1,7 +1,5 @@
 package br.com.moreira.googleMapsLeeds;
 
-import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
-import br.com.moreira.googleMapsLeeds.controller.ControllerHome;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
