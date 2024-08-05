@@ -1,6 +1,7 @@
 package br.com.moreira.googleMapsLeeds.DTO;
 
 public class ComerciosTransicaoDTO {
+    private String id;
     private String nome;
     private String segmento;
     private String cidade;
@@ -13,6 +14,23 @@ public class ComerciosTransicaoDTO {
         this.site = site;
         this.segmento = segmento;
         this.contato = contato;
+    }
+
+    public ComerciosTransicaoDTO(String id, String nome, String segmento, String cidade, String contato, String site){
+        this.id = id;
+        this.nome = nome;
+        this.cidade = cidade;
+        this.site = site;
+        this.segmento = segmento;
+        this.contato = contato;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {

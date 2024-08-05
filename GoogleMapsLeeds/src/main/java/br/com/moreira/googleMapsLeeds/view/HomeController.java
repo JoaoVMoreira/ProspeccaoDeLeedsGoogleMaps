@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -37,7 +37,8 @@ public class HomeController implements Initializable {
 
     @FXML
     private TextField coordText;
-
+    @FXML
+    private Button deleteButton;
     @FXML
     private Button startButton;
     @FXML
@@ -76,6 +77,13 @@ public class HomeController implements Initializable {
     }
 
     @FXML
+    private void deleteItem(){
+        List<ComerciosTransicaoDTO> selectedItens = tableCommerce.getSelectionModel().getSelectedItems();
+        controller.deleteItens(selectedItens);
+        preencherTable();
+    }
+
+    @FXML
     private void cancelarBusca(){
         interromperThread.set(true);
         coordText.setDisable(false);
@@ -89,6 +97,7 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tableCommerce.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colSegmento.setCellValueFactory(new PropertyValueFactory<>("segmento"));
         colCidade.setCellValueFactory(new PropertyValueFactory<>("cidade"));

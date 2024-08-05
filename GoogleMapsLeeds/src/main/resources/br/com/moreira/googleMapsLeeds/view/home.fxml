@@ -64,7 +64,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button layoutX="342.0" layoutY="614.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #E60023; -fx-border-color: white; -fx-border-width: 2;" text="EXCLUIR" textFill="WHITE">
+      <Button fx:id="deleteButton" layoutX="342.0" layoutY="614.0" mnemonicParsing="false" onAction="#deleteItem" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #E60023; -fx-border-color: white; -fx-border-width: 2;" text="EXCLUIR" textFill="WHITE">
          <font>
             <Font name="Arial Black" size="26.0" />
          </font>

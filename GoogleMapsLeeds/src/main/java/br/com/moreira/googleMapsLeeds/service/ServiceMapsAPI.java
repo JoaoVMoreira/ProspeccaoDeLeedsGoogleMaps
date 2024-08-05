@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ServiceHome {
+public class ServiceMapsAPI {
 
     private ObjectMapper mapper = new ObjectMapper();
 

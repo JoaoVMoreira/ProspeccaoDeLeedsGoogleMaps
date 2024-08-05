@@ -21,7 +21,7 @@ public class ComerciosTransicaoService {
         EntityManager entityManager = factory.createEntityManager();
         try{
             List<ComerciosTransicaoModel> result = entityManager.createQuery(query, ComerciosTransicaoModel.class).getResultList();
-            return result.stream().map(c -> new ComerciosTransicaoDTO(c.getNome(), c.getSegmento(), c.getCidade(), c.getContato(), c.getSite())).collect(Collectors.toList());
+            return result.stream().map(c -> new ComerciosTransicaoDTO(c.getId(), c.getNome(), c.getSegmento(), c.getCidade(), c.getContato(), c.getSite())).collect(Collectors.toList());
         }catch (Exception e){
             System.out.println(e);
             return null;
@@ -40,6 +40,23 @@ public class ComerciosTransicaoService {
             transaction.commit();
         }catch (Exception e){
             System.out.println(e);
+        }finally {
+            entityManager.close();
+        }
+    }
+    public void DeleteCommercesFromDatabase(String id){
+        ComerciosTransicaoModel comercio = null;
+        EntityTransaction transaction = null;
+        EntityManager entityManager = factory.createEntityManager();
+        try{
+            transaction = entityManager.getTransaction();
+            comercio = entityManager.find(ComerciosTransicaoModel.class, id);
+            transaction.begin();
+            entityManager.remove(comercio);
+            transaction.commit();
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
         }finally {
             entityManager.close();
         }
