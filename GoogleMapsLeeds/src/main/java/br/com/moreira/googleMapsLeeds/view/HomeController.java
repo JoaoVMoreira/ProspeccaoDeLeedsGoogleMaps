@@ -1,7 +1,8 @@
 package br.com.moreira.googleMapsLeeds.view;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
-import br.com.moreira.googleMapsLeeds.controller.ControllerHome;
+import br.com.moreira.googleMapsLeeds.controller.ControllerComerciosTransicao;
+import br.com.moreira.googleMapsLeeds.controller.ControllerMapsAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +47,8 @@ public class HomeController implements Initializable {
     @FXML
     private Alert alertWarning = new Alert(Alert.AlertType.WARNING);
 
-    private ControllerHome controller = new ControllerHome();
+    private ControllerMapsAPI controller = new ControllerMapsAPI();
+    private ControllerComerciosTransicao transicaoController = new ControllerComerciosTransicao();
     private AtomicBoolean interromperThread = new AtomicBoolean(false);
 
     @FXML
@@ -79,7 +81,7 @@ public class HomeController implements Initializable {
     @FXML
     private void deleteItem(){
         List<ComerciosTransicaoDTO> selectedItens = tableCommerce.getSelectionModel().getSelectedItems();
-        controller.deleteItens(selectedItens);
+        transicaoController.deleteItens(selectedItens);
         preencherTable();
     }
 
@@ -107,7 +109,7 @@ public class HomeController implements Initializable {
     }
 
     private void preencherTable() {
-        ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(controller.listarComerciosTransicao());
+        ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
         tableCommerce.setItems(comercios);
     }
 

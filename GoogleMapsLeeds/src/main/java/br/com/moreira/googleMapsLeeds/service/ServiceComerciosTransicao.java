@@ -9,13 +9,13 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ComerciosTransicaoService {
+public class ServiceComerciosTransicao {
 
     private EntityManagerFactory factory;
-    public ComerciosTransicaoService (EntityManagerFactory entityManagerFactory){
+
+    public ServiceComerciosTransicao(EntityManagerFactory entityManagerFactory){
         this.factory = entityManagerFactory;
     }
-
     public List<ComerciosTransicaoDTO> listar(){
         String query = "FROM comercioTransacao c";
         EntityManager entityManager = factory.createEntityManager();
@@ -29,7 +29,6 @@ public class ComerciosTransicaoService {
             entityManager.close();
         }
     }
-
     public void AddCommerceListInDataBase(ComerciosTransicaoModel data){
         EntityTransaction transaction = null;
         EntityManager entityManager = factory.createEntityManager();
