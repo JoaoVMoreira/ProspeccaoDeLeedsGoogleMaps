@@ -1,6 +1,7 @@
 package br.com.moreira.googleMapsLeeds.view;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
+import br.com.moreira.googleMapsLeeds.controller.ControllerComercios;
 import br.com.moreira.googleMapsLeeds.controller.ControllerComerciosTransicao;
 import br.com.moreira.googleMapsLeeds.controller.ControllerMapsAPI;
 import javafx.collections.FXCollections;
@@ -16,26 +17,20 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class HomeController implements Initializable {
+public class HomeViewController implements Initializable {
 
     @FXML
     private TableView<ComerciosTransicaoDTO> tableCommerce;
-
     @FXML
     private TableColumn<ComerciosTransicaoDTO, String> colNome;
-
     @FXML
     private TableColumn<ComerciosTransicaoDTO, String> colSegmento;
-
     @FXML
     private TableColumn<ComerciosTransicaoDTO, String> colCidade;
-
     @FXML
     private TableColumn<ComerciosTransicaoDTO, String> colNumero;
-
     @FXML
     private TableColumn<ComerciosTransicaoDTO, String> colSite;
-
     @FXML
     private TextField coordText;
     @FXML
@@ -47,9 +42,10 @@ public class HomeController implements Initializable {
     @FXML
     private Alert alertWarning = new Alert(Alert.AlertType.WARNING);
 
-    private ControllerMapsAPI controller = new ControllerMapsAPI();
+    private ControllerMapsAPI controllerMapsAPI = new ControllerMapsAPI();
     private ControllerComerciosTransicao transicaoController = new ControllerComerciosTransicao();
     private AtomicBoolean interromperThread = new AtomicBoolean(false);
+    private ControllerComercios controllerComercios = new ControllerComercios();
 
     @FXML
     public void buscarComercios() throws IOException, InterruptedException {
@@ -60,7 +56,7 @@ public class HomeController implements Initializable {
                 coordText.setDisable(true);
                 startButton.setDisable(true);
 
-                controller.BuscaLocal(coordenadas, interromperThread);
+                controllerMapsAPI.BuscaLocal(coordenadas, interromperThread);
 
                 coordText.setText("");
                 preencherTable();
@@ -97,6 +93,15 @@ public class HomeController implements Initializable {
         alertWarning.showAndWait();
     }
 
+    @FXML
+    public void moveToMainDB(){
+        controllerComercios.MoveToMainCommerce();
+        preencherTable();
+        alertConfirmation.setTitle("Informações movidas ao DB principal");
+        alertConfirmation.setContentText("Processo realizado com sucesso!");
+        alertConfirmation.showAndWait();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableCommerce.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -107,6 +112,8 @@ public class HomeController implements Initializable {
         colSite.setCellValueFactory(new PropertyValueFactory<>("site"));
         preencherTable();
     }
+
+
 
     private void preencherTable() {
         ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());

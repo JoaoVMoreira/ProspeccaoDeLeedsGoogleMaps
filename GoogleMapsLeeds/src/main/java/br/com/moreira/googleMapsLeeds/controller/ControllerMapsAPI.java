@@ -2,7 +2,7 @@ package br.com.moreira.googleMapsLeeds.controller;
 
 import br.com.moreira.googleMapsLeeds.infra.Factory;
 import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
-import br.com.moreira.googleMapsLeeds.service.ServiceComerciosTransicao;
+import br.com.moreira.googleMapsLeeds.service.ServiceTransitionCommerce;
 import br.com.moreira.googleMapsLeeds.service.ServiceMapsAPI;
 
 import javax.persistence.EntityManagerFactory;
@@ -12,13 +12,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ControllerMapsAPI {
     private ServiceMapsAPI serviceMapsAPI;
-    private ServiceComerciosTransicao serviceComerciosTransicao;
+    private ServiceTransitionCommerce serviceTransitionCommerce;
     private EntityManagerFactory entityManagerFactory;
 
     public ControllerMapsAPI(){
         this.entityManagerFactory = Factory.getEntityManagerFactory();
         this.serviceMapsAPI = new ServiceMapsAPI();
-        this.serviceComerciosTransicao = new ServiceComerciosTransicao(entityManagerFactory);
+        this.serviceTransitionCommerce = new ServiceTransitionCommerce(entityManagerFactory);
     }
 
     public void BuscaLocal(String location, AtomicBoolean interromperThread) throws IOException, InterruptedException {
@@ -28,7 +28,7 @@ public class ControllerMapsAPI {
                 return;
             }
             ComerciosTransicaoModel commerceDetails = serviceMapsAPI.PlaceDetails(commerce);
-            serviceComerciosTransicao.AddCommerceListInDataBase(commerceDetails);
+            serviceTransitionCommerce.AddCommerceListInDataBase(commerceDetails);
         }
     }
 

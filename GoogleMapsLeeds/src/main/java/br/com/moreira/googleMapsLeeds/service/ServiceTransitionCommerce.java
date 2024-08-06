@@ -1,6 +1,7 @@
 package br.com.moreira.googleMapsLeeds.service;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
+import br.com.moreira.googleMapsLeeds.model.ComerciosModel;
 import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
 
 import javax.persistence.EntityManager;
@@ -9,13 +10,14 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ServiceComerciosTransicao {
+public class ServiceTransitionCommerce {
 
     private EntityManagerFactory factory;
 
-    public ServiceComerciosTransicao(EntityManagerFactory entityManagerFactory){
+    public ServiceTransitionCommerce(EntityManagerFactory entityManagerFactory){
         this.factory = entityManagerFactory;
     }
+
     public List<ComerciosTransicaoDTO> listar(){
         String query = "FROM comercioTransacao c";
         EntityManager entityManager = factory.createEntityManager();
@@ -58,6 +60,12 @@ public class ServiceComerciosTransicao {
             System.out.println(e.getMessage());
         }finally {
             entityManager.close();
+        }
+    }
+    public void DeleteAllFromTranditionDB(){
+        List<ComerciosTransicaoDTO> result = listar();
+        for (ComerciosTransicaoDTO i : result){
+            DeleteCommercesFromDatabase(i.getId());
         }
     }
 }
