@@ -29,9 +29,7 @@ public class ComerciosTransicaoModel {
 
     //Construtores
     public ComerciosTransicaoModel(){
-
     }
-
     public ComerciosTransicaoModel(PlaceDetailsDTO data){
         this.nome = data.getResult().getName();
         this.segmento = data.getResult().getTypes().get(1);
@@ -40,9 +38,8 @@ public class ComerciosTransicaoModel {
         this.cttRealizado = false;
         var city = data.getResult().getAddresComponents().get(3).getLong_name();
         this.cidade = city;
-        this.possuiWpp = false;
+        this.possuiWpp = true;
     }
-
     public ComerciosTransicaoModel(String id, String nome, String segmento, String contato, String site, Boolean cttRealizado, String cidade, Boolean possuiWpp){
         this.id = id;
         this.nome = nome;

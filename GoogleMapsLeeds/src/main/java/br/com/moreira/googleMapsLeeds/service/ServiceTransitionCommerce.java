@@ -68,4 +68,21 @@ public class ServiceTransitionCommerce {
             DeleteCommercesFromDatabase(i.getId());
         }
     }
+    public void alterCommerce(String commerceId){
+        ComerciosTransicaoModel comercio = null;
+        EntityTransaction transaction = null;
+        EntityManager entityManager = factory.createEntityManager();
+        try{
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            comercio = entityManager.find(ComerciosTransicaoModel.class, commerceId);
+            comercio.setPossuiWpp(false);
+            entityManager.merge(comercio);
+            transaction.commit();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            entityManager.close();
+        }
+    }
 }

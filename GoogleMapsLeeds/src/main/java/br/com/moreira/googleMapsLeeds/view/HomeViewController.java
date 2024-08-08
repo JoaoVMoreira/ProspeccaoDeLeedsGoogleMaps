@@ -4,6 +4,7 @@ import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
 import br.com.moreira.googleMapsLeeds.controller.ControllerComercios;
 import br.com.moreira.googleMapsLeeds.controller.ControllerComerciosTransicao;
 import br.com.moreira.googleMapsLeeds.controller.ControllerMapsAPI;
+import br.com.moreira.googleMapsLeeds.controller.ControllerWhatsAppAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,6 +47,7 @@ public class HomeViewController implements Initializable {
     private ControllerComerciosTransicao transicaoController = new ControllerComerciosTransicao();
     private AtomicBoolean interromperThread = new AtomicBoolean(false);
     private ControllerComercios controllerComercios = new ControllerComercios();
+    private ControllerWhatsAppAPI controllerWhatsAppAPI = new ControllerWhatsAppAPI();
 
     @FXML
     public void buscarComercios() throws IOException, InterruptedException {
@@ -65,6 +67,7 @@ public class HomeViewController implements Initializable {
                 alertConfirmation.setTitle("Processo finalizado com sucesso");
                 alertConfirmation.setContentText("Listagem de comercios finalizada com sucesso");
                 alertConfirmation.showAndWait();
+
             }catch (Exception e){
                 System.out.println(e.getMessage());
             }
@@ -82,15 +85,20 @@ public class HomeViewController implements Initializable {
     }
 
     @FXML
-    private void cancelarBusca(){
+    private void cancelarBusca() throws IOException, InterruptedException {
         interromperThread.set(true);
         coordText.setDisable(false);
         startButton.setDisable(false);
 
-
         alertWarning.setTitle("Processo interrompido");
         alertWarning.setContentText("Processo cancelado com sucesso!");
         alertWarning.showAndWait();
+    }
+
+    @FXML
+    public void verifyContacts() throws IOException, InterruptedException {
+        ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
+        controllerWhatsAppAPI.VerifyContact(comercios);
     }
 
     @FXML
@@ -113,12 +121,9 @@ public class HomeViewController implements Initializable {
         preencherTable();
     }
 
-
-
     private void preencherTable() {
         ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
         tableCommerce.setItems(comercios);
     }
-
 
 }

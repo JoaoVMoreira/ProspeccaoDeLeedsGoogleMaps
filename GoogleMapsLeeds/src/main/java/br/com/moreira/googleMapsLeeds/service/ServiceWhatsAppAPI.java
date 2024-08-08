@@ -1,11 +1,37 @@
 package br.com.moreira.googleMapsLeeds.service;
 
+import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
+import br.com.moreira.googleMapsLeeds.DTO.VerifyContactDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.persistence.EntityManagerFactory;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.*;
+import java.net.http.HttpResponse;
+import java.util.List;
+
 public class ServiceWhatsAppAPI {
+    private ObjectMapper mapper;
+    private ServiceTransitionCommerce serviceTransitionCommerce;
 
+    public ServiceWhatsAppAPI(EntityManagerFactory entityManagerFactory){
+        this.mapper = new ObjectMapper();
+        this.serviceTransitionCommerce = new ServiceTransitionCommerce(entityManagerFactory);
+    }
 
-
-    public boolean startSession(){
-        //http://localhost:3000/session/start/{NomeSessão}
+    public boolean startSession() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newBuilder().build();
+        String requestLink = "http://localhost:3000/session/start/testMain";
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .header("x-api-key", "testMain")
+                .uri(URI.create(requestLink))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response);
         //iniciar sessão
         //Verifica se a sessão esta iniciada
         return true;
@@ -19,15 +45,24 @@ public class ServiceWhatsAppAPI {
         return true;
     }
 
-    public boolean verifyContact(String contact){
-        //http://localhost:3000/client/getContactById/{NomeSessão}
-        //  *"isUser": true
-        //
-        //Verificar se o contato está cadastrado
-        //
-        //adicionar @c.us no final do contato
-        //realizar requisição
-        //retornar true ou false
-        return true;
+    public void verifyContact(List<ComerciosTransicaoDTO> listCommerce) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newBuilder().build();
+        String linkRequest = "http://localhost:3000/client/isRegisteredUser/testMain";
+        String contact = "";
+        for (ComerciosTransicaoDTO i : listCommerce){
+            contact = trataContato(i.getContato());
+            String requestJSON = "{\"number\": \"" + contact +"\"}";
+            HttpRequest request = HttpRequest.newBuilder()
+                    .POST(BodyPublishers.ofString(requestJSON))
+                    .header("Content-Type", "application/json")
+                    .uri(URI.create(linkRequest))
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            VerifyContactDTO contactOk = mapper.readValue(response.body(), VerifyContactDTO.class);
+        }
+    }
+
+    private String trataContato(String contato){
+        return contato.replace(" ", "").replace("+", "");
     }
 }
