@@ -61,6 +61,7 @@ public class HomeViewController implements Initializable {
                 controllerMapsAPI.BuscaLocal(coordenadas, interromperThread);
 
                 coordText.setText("");
+                verifyContacts();
                 preencherTable();
                 coordText.setDisable(false);
                 startButton.setDisable(false);
@@ -96,12 +97,6 @@ public class HomeViewController implements Initializable {
     }
 
     @FXML
-    public void verifyContacts() throws IOException, InterruptedException {
-        ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
-        controllerWhatsAppAPI.VerifyContact(comercios);
-    }
-
-    @FXML
     public void moveToMainDB(){
         controllerComercios.MoveToMainCommerce();
         preencherTable();
@@ -118,12 +113,34 @@ public class HomeViewController implements Initializable {
         colCidade.setCellValueFactory(new PropertyValueFactory<>("cidade"));
         colNumero.setCellValueFactory(new PropertyValueFactory<>("contato"));
         colSite.setCellValueFactory(new PropertyValueFactory<>("site"));
+
+        tableCommerce.setRowFactory(tv -> new TableRow<ComerciosTransicaoDTO>(){
+            @Override
+            protected void updateItem(ComerciosTransicaoDTO commerce, boolean empty){
+                super.updateItem(commerce, empty);
+                if (commerce == null || empty) {
+                    setStyle("");
+                } else {
+                    if (commerce.isPossuiWpp()) {
+                        setStyle("-fx-background-color: #4CBA61;");
+                    } else {
+                        setStyle("-fx-background-color: #F8D24D;");
+                    }
+                }
+            }
+        });
+
         preencherTable();
     }
 
     private void preencherTable() {
         ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
         tableCommerce.setItems(comercios);
+    }
+
+    private void verifyContacts() throws IOException, InterruptedException {
+        ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
+        controllerWhatsAppAPI.VerifyContact(comercios);
     }
 
 }

@@ -1,7 +1,6 @@
 package br.com.moreira.googleMapsLeeds.service;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
-import br.com.moreira.googleMapsLeeds.model.ComerciosModel;
 import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
 
 import javax.persistence.EntityManager;
@@ -13,6 +12,7 @@ import java.util.stream.Collectors;
 public class ServiceTransitionCommerce {
 
     private EntityManagerFactory factory;
+    private ComerciosTransicaoModel comercio = null;
 
     public ServiceTransitionCommerce(EntityManagerFactory entityManagerFactory){
         this.factory = entityManagerFactory;
@@ -23,7 +23,7 @@ public class ServiceTransitionCommerce {
         EntityManager entityManager = factory.createEntityManager();
         try{
             List<ComerciosTransicaoModel> result = entityManager.createQuery(query, ComerciosTransicaoModel.class).getResultList();
-            return result.stream().map(c -> new ComerciosTransicaoDTO(c.getId(), c.getNome(), c.getSegmento(), c.getCidade(), c.getContato(), c.getSite())).collect(Collectors.toList());
+            return result.stream().map(c -> new ComerciosTransicaoDTO(c.getId(), c.getNome(), c.getSegmento(), c.getCidade(), c.getContato(), c.getSite(), c.getPossuiWpp())).collect(Collectors.toList());
         }catch (Exception e){
             System.out.println(e);
             return null;
@@ -46,11 +46,9 @@ public class ServiceTransitionCommerce {
         }
     }
     public void DeleteCommercesFromDatabase(String id){
-        ComerciosTransicaoModel comercio = null;
-        EntityTransaction transaction = null;
         EntityManager entityManager = factory.createEntityManager();
         try{
-            transaction = entityManager.getTransaction();
+            EntityTransaction transaction = entityManager.getTransaction();
             comercio = entityManager.find(ComerciosTransicaoModel.class, id);
             transaction.begin();
             entityManager.remove(comercio);

@@ -7,6 +7,7 @@ public class ComerciosTransicaoDTO {
     private String cidade;
     private String contato;
     private String site;
+    private boolean possuiWpp;
 
     public ComerciosTransicaoDTO(String nome, String segmento, String cidade, String contato, String site){
         this.nome = nome;
@@ -23,6 +24,16 @@ public class ComerciosTransicaoDTO {
         this.site = site;
         this.segmento = segmento;
         this.contato = contato;
+    }
+
+    public ComerciosTransicaoDTO(String id, String nome, String segmento, String cidade, String contato, String site, boolean possuiWpp) {
+        this.id = id;
+        this.nome = nome;
+        this.segmento = segmento;
+        this.cidade = cidade;
+        this.contato = contato;
+        this.site = site;
+        this.possuiWpp = possuiWpp;
     }
 
     public String getId() {
@@ -71,5 +82,13 @@ public class ComerciosTransicaoDTO {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public boolean isPossuiWpp() {
+        return possuiWpp;
+    }
+
+    public void setPossuiWpp(boolean possuiWpp) {
+        this.possuiWpp = possuiWpp;
     }
 }
