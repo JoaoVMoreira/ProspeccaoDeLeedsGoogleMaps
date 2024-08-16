@@ -1,12 +1,14 @@
 package br.com.moreira.googleMapsLeeds.service;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
+import br.com.moreira.googleMapsLeeds.DTO.ConnectionStatusDTO;
 import br.com.moreira.googleMapsLeeds.DTO.VerifyContactDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.*;
@@ -39,12 +41,17 @@ public class ServiceWhatsAppAPI {
         return true;
     }
 
-    private boolean verifySessio(){
-        //http://localhost:3000/session/status/{NomeSessão}
-        //  *"sucess": true
-        //
-        //verificar se a sessão esta ativa
-        return true;
+    public boolean verifySession() throws IOException, InterruptedException {
+        String requestLink = "http://localhost:3000/session/status/testMain";
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(requestLink))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        ConnectionStatusDTO success = mapper.readValue(response.body(), ConnectionStatusDTO.class);
+        return success.isSuccess();
     }
 
     public void verifyContact(List<ComerciosTransicaoDTO> listCommerce) throws IOException, InterruptedException {

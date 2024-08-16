@@ -1,6 +1,7 @@
 package br.com.moreira.googleMapsLeeds.view;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
+import br.com.moreira.googleMapsLeeds.Main;
 import br.com.moreira.googleMapsLeeds.controller.ControllerComercios;
 import br.com.moreira.googleMapsLeeds.controller.ControllerComerciosTransicao;
 import br.com.moreira.googleMapsLeeds.controller.ControllerMapsAPI;
@@ -11,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,7 +53,7 @@ public class HomeViewController implements Initializable {
     private ControllerWhatsAppAPI controllerWhatsAppAPI = new ControllerWhatsAppAPI();
 
     @FXML
-    public void buscarComercios() throws IOException, InterruptedException {
+    void buscarComercios() throws IOException, InterruptedException {
         interromperThread.set(false);
         Runnable task = () -> {
             try{
@@ -77,14 +80,12 @@ public class HomeViewController implements Initializable {
         searchLocalThread.setDaemon(true);
         searchLocalThread.start();
     }
-
     @FXML
     private void deleteItem(){
         List<ComerciosTransicaoDTO> selectedItens = tableCommerce.getSelectionModel().getSelectedItems();
         transicaoController.deleteItens(selectedItens);
         preencherTable();
     }
-
     @FXML
     private void cancelarBusca() throws IOException, InterruptedException {
         interromperThread.set(true);
@@ -95,14 +96,26 @@ public class HomeViewController implements Initializable {
         alertWarning.setContentText("Processo cancelado com sucesso!");
         alertWarning.showAndWait();
     }
-
     @FXML
-    public void moveToMainDB(){
+    void moveToMainDB(){
         controllerComercios.MoveToMainCommerce();
         preencherTable();
         alertConfirmation.setTitle("Informações movidas ao DB principal");
         alertConfirmation.setContentText("Processo realizado com sucesso!");
         alertConfirmation.showAndWait();
+    }
+    @FXML
+    void keyEventController(KeyEvent event) throws IOException, InterruptedException {
+        if(event.getCode() == KeyCode.DELETE){
+            deleteItem();
+        }
+        if (event.getCode() == KeyCode.ESCAPE){
+            cancelarBusca();
+        }
+    }
+    @FXML
+    void configPage(){
+        Main.changeScreen("config");
     }
 
     @Override
@@ -114,6 +127,11 @@ public class HomeViewController implements Initializable {
         colNumero.setCellValueFactory(new PropertyValueFactory<>("contato"));
         colSite.setCellValueFactory(new PropertyValueFactory<>("site"));
 
+
+        formatTable();
+        preencherTable();
+    }
+    private void formatTable(){
         tableCommerce.setRowFactory(tv -> new TableRow<ComerciosTransicaoDTO>(){
             @Override
             protected void updateItem(ComerciosTransicaoDTO commerce, boolean empty){
@@ -121,7 +139,9 @@ public class HomeViewController implements Initializable {
                 if (commerce == null || empty) {
                     setStyle("");
                 } else {
-                    if (commerce.isPossuiWpp()) {
+                    if (isSelected()) {
+                        setStyle("-fx-border-color: black; -fx-border-width: 0.5px; -fx-font-weight: bold;");
+                    } else if (commerce.isPossuiWpp()) {
                         setStyle("-fx-background-color: #4CBA61;");
                     } else {
                         setStyle("-fx-background-color: #F8D24D;");
@@ -129,15 +149,11 @@ public class HomeViewController implements Initializable {
                 }
             }
         });
-
-        preencherTable();
     }
-
     private void preencherTable() {
         ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
         tableCommerce.setItems(comercios);
     }
-
     private void verifyContacts() throws IOException, InterruptedException {
         ObservableList<ComerciosTransicaoDTO> comercios = FXCollections.observableArrayList(transicaoController.listarComerciosTransicao());
         controllerWhatsAppAPI.VerifyContact(comercios);

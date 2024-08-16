@@ -2,7 +2,6 @@ package br.com.moreira.googleMapsLeeds.controller;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
 import br.com.moreira.googleMapsLeeds.infra.Factory;
-import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
 import br.com.moreira.googleMapsLeeds.service.ServiceWhatsAppAPI;
 
 import javax.persistence.EntityManagerFactory;
@@ -23,5 +22,8 @@ public class ControllerWhatsAppAPI {
     }
     public void VerifyContact(List<ComerciosTransicaoDTO> commerceList) throws IOException, InterruptedException {
         service.verifyContact(commerceList);
+    }
+    public boolean testConnect() throws IOException, InterruptedException {
+        return service.verifySession();
     }
 }
