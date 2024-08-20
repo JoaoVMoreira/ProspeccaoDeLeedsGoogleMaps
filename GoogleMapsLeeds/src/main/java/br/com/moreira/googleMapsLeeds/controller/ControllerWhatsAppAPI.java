@@ -1,6 +1,7 @@
 package br.com.moreira.googleMapsLeeds.controller;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
+import br.com.moreira.googleMapsLeeds.DTO.QrcodeViewDTO;
 import br.com.moreira.googleMapsLeeds.infra.Factory;
 import br.com.moreira.googleMapsLeeds.service.ServiceWhatsAppAPI;
 
@@ -26,4 +27,11 @@ public class ControllerWhatsAppAPI {
     public boolean testConnect() throws IOException, InterruptedException {
         return service.verifySession();
     }
+    public boolean cancelSession() throws IOException, InterruptedException {
+        return service.cancelSession();
+    }
+    public QrcodeViewDTO startSession() throws IOException, InterruptedException {
+        return service.startSession();
+    }
+
 }

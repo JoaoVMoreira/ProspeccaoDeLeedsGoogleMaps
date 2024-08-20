@@ -1,9 +1,8 @@
 package br.com.moreira.googleMapsLeeds.service;
 
-import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
-import br.com.moreira.googleMapsLeeds.DTO.ConnectionStatusDTO;
-import br.com.moreira.googleMapsLeeds.DTO.VerifyContactDTO;
+import br.com.moreira.googleMapsLeeds.DTO.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.nayuki.qrcodegen.QrCode;
 
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
@@ -25,22 +24,6 @@ public class ServiceWhatsAppAPI {
         this.serviceTransitionCommerce = new ServiceTransitionCommerce(factory);
         this.factory = factory;
     }
-
-    public boolean startSession() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newBuilder().build();
-        String requestLink = "http://localhost:3000/session/start/testMain";
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .header("x-api-key", "testMain")
-                .uri(URI.create(requestLink))
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response);
-        //iniciar sessão
-        //Verifica se a sessão esta iniciada
-        return true;
-    }
-
     public boolean verifySession() throws IOException, InterruptedException {
         String requestLink = "http://localhost:3000/session/status/testMain";
         HttpClient client = HttpClient.newBuilder().build();
@@ -78,8 +61,54 @@ public class ServiceWhatsAppAPI {
             }
         }
     }
-
+    public boolean cancelSession() throws IOException, InterruptedException {
+        String linkRequest = "http://localhost:3000/session/terminate/testMain";
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .header("x-api-key", "x-api-key")
+                .uri(URI.create(linkRequest))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        ConnectionStatusDTO result = mapper.readValue(response.body(), ConnectionStatusDTO.class);
+        return result.isSuccess();
+    }
+    public QrcodeViewDTO startSession() throws IOException, InterruptedException {
+        String linkRequest = "http://localhost:3000/session/start/testMain";
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .header("x-api-key", "testMain")
+                .uri(URI.create(linkRequest))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        ConnectionStatusDTO result = mapper.readValue(response.body(), ConnectionStatusDTO.class);
+        if(result.isSuccess()){
+            QrcodeDTO qr = getQRCode();
+            while (!qr.isSuccess()){
+                qr = getQRCode();
+            }
+            return new QrcodeViewDTO(qr.isSuccess(), convertToQRCode(qr.getQr()));
+        }else{
+            System.out.println("Erro ao iniciar sessão");
+            return null;
+        }
+    }
+    private QrcodeDTO getQRCode() throws IOException, InterruptedException {
+        String linkRequest = "http://localhost:3000/session/qr/testMain";
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .header("x-api-key", "x-api-key")
+                .uri(URI.create(linkRequest))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return mapper.readValue(response.body(), QrcodeDTO.class);
+    }
     private String trataContato(String contato){
         return contato.replace(" ", "").replace("+", "").replace("-", "");
+    }
+    private QrCode convertToQRCode(String qr){
+        return QrCode.encodeText(qr, QrCode.Ecc.MEDIUM);
     }
 }
