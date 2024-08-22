@@ -18,7 +18,6 @@ public class Main extends Application {
         try {
             stage = primaryStage;
 
-            //FXMLLoader fxmlHome = new FXMLLoader(getClass().getResource("/br/com/moreira/googleMapsLeeds/view/home.fxml"));
             Parent fxmlHome = FXMLLoader.load(getClass().getResource("/br/com/moreira/googleMapsLeeds/view/home.fxml"));
             homeScene = new Scene(fxmlHome);
 

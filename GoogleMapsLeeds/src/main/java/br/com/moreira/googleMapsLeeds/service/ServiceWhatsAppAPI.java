@@ -2,12 +2,11 @@ package br.com.moreira.googleMapsLeeds.service;
 
 import br.com.moreira.googleMapsLeeds.DTO.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.nayuki.qrcodegen.QrCode;
 
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
+
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.*;
@@ -36,7 +35,6 @@ public class ServiceWhatsAppAPI {
         ConnectionStatusDTO success = mapper.readValue(response.body(), ConnectionStatusDTO.class);
         return success.isSuccess();
     }
-
     public void verifyContact(List<ComerciosTransicaoDTO> listCommerce) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newBuilder().build();
         String linkRequest = "http://localhost:3000/client/isRegisteredUser/testMain";
@@ -73,7 +71,7 @@ public class ServiceWhatsAppAPI {
         ConnectionStatusDTO result = mapper.readValue(response.body(), ConnectionStatusDTO.class);
         return result.isSuccess();
     }
-    public QrcodeViewDTO startSession() throws IOException, InterruptedException {
+    public QrcodeDTO startSession() throws IOException, InterruptedException {
         String linkRequest = "http://localhost:3000/session/start/testMain";
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -82,18 +80,29 @@ public class ServiceWhatsAppAPI {
                 .uri(URI.create(linkRequest))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Thread.sleep(3000);
         ConnectionStatusDTO result = mapper.readValue(response.body(), ConnectionStatusDTO.class);
-        if(result.isSuccess()){
-            QrcodeDTO qr = getQRCode();
-            while (!qr.isSuccess()){
+        if (result.isSuccess()) {
+
+            QrcodeDTO qr;
+            int maxAttempts = 10;
+            int attempts = 0;
+
+            do {
                 qr = getQRCode();
-            }
-            return new QrcodeViewDTO(qr.isSuccess(), convertToQRCode(qr.getQr()));
-        }else{
-            System.out.println("Erro ao iniciar sessão");
-            return null;
+                attempts++;
+                Thread.sleep(2000);
+                if (qr.getQr() != null && qr.isSuccess()) {
+                    return qr;
+                }
+            } while (!qr.isSuccess() && attempts < maxAttempts);
+        } else {
+            System.out.println("ERRO AO INICIAR SESSÃO");
+            //Adicionar Exception tratada
         }
+        return null;
     }
+
     private QrcodeDTO getQRCode() throws IOException, InterruptedException {
         String linkRequest = "http://localhost:3000/session/qr/testMain";
         HttpClient client = HttpClient.newBuilder().build();
@@ -103,12 +112,10 @@ public class ServiceWhatsAppAPI {
                 .uri(URI.create(linkRequest))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return mapper.readValue(response.body(), QrcodeDTO.class);
+        QrcodeDTO result = mapper.readValue(response.body(), QrcodeDTO.class);
+        return result;
     }
     private String trataContato(String contato){
         return contato.replace(" ", "").replace("+", "").replace("-", "");
-    }
-    private QrCode convertToQRCode(String qr){
-        return QrCode.encodeText(qr, QrCode.Ecc.MEDIUM);
     }
 }

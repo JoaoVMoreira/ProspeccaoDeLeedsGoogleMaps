@@ -1,6 +1,6 @@
 package br.com.moreira.googleMapsLeeds.view;
 
-import br.com.moreira.googleMapsLeeds.DTO.QrcodeViewDTO;
+import br.com.moreira.googleMapsLeeds.DTO.QrcodeDTO;
 import br.com.moreira.googleMapsLeeds.Main;
 import br.com.moreira.googleMapsLeeds.controller.ControllerWhatsAppAPI;
 import javafx.fxml.FXML;
@@ -20,6 +20,7 @@ public class ConfigViewController implements Initializable {
 
     private ControllerWhatsAppAPI controller = new ControllerWhatsAppAPI();
     public static Stage QRcodeModalStage;
+    public static String qrCodeString;
 
     @FXML
     private Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -63,8 +64,9 @@ public class ConfigViewController implements Initializable {
     }
     @FXML
     void startConnection() throws IOException, InterruptedException {
-        QrcodeViewDTO qrCode = controller.startSession();
+        QrcodeDTO qrCode = controller.startSession();
         if(qrCode.isSuccess()){
+            qrCodeString = qrCode.getQr();
             clickAndShow();
         }else{
             negativeAlert.setTitle("ERRO");
@@ -75,7 +77,9 @@ public class ConfigViewController implements Initializable {
 
     public void clickAndShow() throws IOException {
         if (QRcodeModalStage == null){
-            Parent root = FXMLLoader.load(getClass().getResource("/br/com/moreira/googleMapsLeeds/view/qrcodeView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/com/moreira/googleMapsLeeds/view/qrcodeView.fxml"));
+            Parent root = loader.load();
+
             QRcodeModalStage = new Stage();
             QRcodeModalStage.setScene(new Scene(root));
             QRcodeModalStage.setTitle("My modal window");

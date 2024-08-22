@@ -1,7 +1,7 @@
 package br.com.moreira.googleMapsLeeds.controller;
 
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
-import br.com.moreira.googleMapsLeeds.DTO.QrcodeViewDTO;
+import br.com.moreira.googleMapsLeeds.DTO.QrcodeDTO;
 import br.com.moreira.googleMapsLeeds.infra.Factory;
 import br.com.moreira.googleMapsLeeds.service.ServiceWhatsAppAPI;
 
@@ -18,9 +18,6 @@ public class ControllerWhatsAppAPI {
         this.entityManagerFactory = Factory.getEntityManagerFactory();
         this.service = new ServiceWhatsAppAPI(entityManagerFactory);
     }
-    public void StartSession() throws IOException, InterruptedException {
-        service.startSession();
-    }
     public void VerifyContact(List<ComerciosTransicaoDTO> commerceList) throws IOException, InterruptedException {
         service.verifyContact(commerceList);
     }
@@ -30,8 +27,9 @@ public class ControllerWhatsAppAPI {
     public boolean cancelSession() throws IOException, InterruptedException {
         return service.cancelSession();
     }
-    public QrcodeViewDTO startSession() throws IOException, InterruptedException {
-        return service.startSession();
+    public QrcodeDTO startSession() throws IOException, InterruptedException {
+        QrcodeDTO qrCodeGen = service.startSession();
+        return qrCodeGen;
     }
 
 }
