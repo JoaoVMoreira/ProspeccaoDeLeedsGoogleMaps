@@ -4,6 +4,7 @@ import br.com.moreira.googleMapsLeeds.DTO.NearbySearchDTO;
 import br.com.moreira.googleMapsLeeds.DTO.NextPageDTO;
 import br.com.moreira.googleMapsLeeds.DTO.PlaceDetailsDTO;
 import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
+import br.com.moreira.googleMapsLeeds.view.ConfigViewController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -18,15 +19,15 @@ import java.util.stream.Collectors;
 public class ServiceMapsAPI {
 
     private ObjectMapper mapper = new ObjectMapper();
-
+    private String apiKey = ConfigViewController.apiKey;
+//AIzaSyATIq7TrwrW34WT2PHwwuwdm7yokPCKYeA
     public String formatCoord(String coord){
         return coord.replace(" ", "");
     }
-
     public List<String> NearbySearch(String location) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newBuilder().build();
         String formatedLocation = formatCoord(location);
-        String requestLink = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+formatedLocation+"&radius=1000&key=AIzaSyATIq7TrwrW34WT2PHwwuwdm7yokPCKYeA";
+        String requestLink = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+formatedLocation+"&radius=1000&key=" + apiKey;
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(requestLink))
@@ -36,7 +37,6 @@ public class ServiceMapsAPI {
         NearbySearchDTO firstResultNearbySearch = mapper.readValue(response.body(), NearbySearchDTO.class);
         return NextPage(firstResultNextPage, client, firstResultNearbySearch);
     }
-
     public List<String> NextPage(String responseFirstNextPage, HttpClient client, NearbySearchDTO resultFistPage) throws IOException, InterruptedException {
         List<String> placesIdList = new ArrayList<>();
         placesIdList.addAll(resultFistPage.getResult().stream()
@@ -45,7 +45,7 @@ public class ServiceMapsAPI {
 
         while (responseFirstNextPage != null) {
             Thread.sleep(2000);
-            String linkHttpNextPage = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken="+responseFirstNextPage+"&key=AIzaSyATIq7TrwrW34WT2PHwwuwdm7yokPCKYeA";
+            String linkHttpNextPage = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken="+responseFirstNextPage+"&key="+ apiKey;
             HttpRequest requestNextPage = HttpRequest.newBuilder()
                     .GET()
                     .uri(URI.create(linkHttpNextPage))
@@ -60,11 +60,10 @@ public class ServiceMapsAPI {
         }
         return placesIdList;
     }
-
     public ComerciosTransicaoModel PlaceDetails(String data){
         try{
             HttpClient client = HttpClient.newBuilder().build();
-            String linkHttp = "https://maps.googleapis.com/maps/api/place/details/json?place_id="+data+"&key=AIzaSyATIq7TrwrW34WT2PHwwuwdm7yokPCKYeA";
+            String linkHttp = "https://maps.googleapis.com/maps/api/place/details/json?place_id="+data+"&key=" + apiKey;
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(URI.create(linkHttp))

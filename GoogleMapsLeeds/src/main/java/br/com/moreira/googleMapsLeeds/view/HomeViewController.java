@@ -38,8 +38,6 @@ public class HomeViewController implements Initializable {
     @FXML
     private TextField coordText;
     @FXML
-    private Button deleteButton;
-    @FXML
     private Button startButton;
     @FXML
     private Alert alertConfirmation = new Alert(Alert.AlertType.CONFIRMATION);

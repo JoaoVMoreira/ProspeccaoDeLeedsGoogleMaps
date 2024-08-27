@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,11 +22,14 @@ public class ConfigViewController implements Initializable {
     private ControllerWhatsAppAPI controller = new ControllerWhatsAppAPI();
     public static Stage QRcodeModalStage;
     public static String qrCodeString;
+    public static String apiKey;
 
     @FXML
     private Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     @FXML
     private Alert negativeAlert = new Alert(Alert.AlertType.ERROR);
+    @FXML
+    private TextField apiKeyText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -86,5 +90,19 @@ public class ConfigViewController implements Initializable {
             QRcodeModalStage.initModality(Modality.APPLICATION_MODAL);
         }
         QRcodeModalStage.showAndWait();
+    }
+
+    @FXML
+    public void setApiKey(){
+        apiKey = apiKeyText.getText();
+        if (apiKey.length() != 0){
+            System.out.println(apiKey);
+            confirmationAlert.setTitle("CHAVE DE API INSERIDA COM SUCESSO");
+            confirmationAlert.showAndWait();
+        }else{
+            negativeAlert.setTitle("CHAVE DE API INVÁLIDA");
+            negativeAlert.showAndWait();
+        }
+
     }
 }

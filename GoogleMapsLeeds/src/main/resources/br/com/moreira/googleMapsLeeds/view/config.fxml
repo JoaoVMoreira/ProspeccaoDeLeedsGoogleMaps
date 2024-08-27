@@ -58,8 +58,8 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="coordText" layoutX="185.0" layoutY="327.0" prefHeight="45.0" prefWidth="620.0" style="-fx-background-color: #E2E2E2;" />
-      <Button layoutX="830.0" layoutY="320.0" mnemonicParsing="false" onAction="#clickAndShow" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #3A994C; -fx-border-color: white; -fx-border-width: 2;" text="DEFINIR API KEY" textFill="WHITE">
+      <TextField fx:id="apiKeyText" layoutX="185.0" layoutY="327.0" prefHeight="45.0" prefWidth="620.0" style="-fx-background-color: #E2E2E2;" />
+      <Button layoutX="830.0" layoutY="320.0" mnemonicParsing="false" onAction="#setApiKey" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #3A994C; -fx-border-color: white; -fx-border-width: 2;" text="DEFINIR API KEY" textFill="WHITE">
          <font>
             <Font name="Arial Black" size="22.0" />
          </font>
