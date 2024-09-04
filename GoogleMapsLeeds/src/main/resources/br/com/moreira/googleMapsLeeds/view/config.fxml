@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.moreira.googleMapsLeeds.view.ConfigViewController">
@@ -69,6 +70,27 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Slider layoutX="244.0" layoutY="475.0" prefWidth="752.0" />
+      <Slider fx:id="slider" layoutX="244.0" layoutY="475.0" prefHeight="14.0" prefWidth="391.0" />
+      <Label layoutX="217.0" layoutY="469.0" text="1" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="640.0" layoutY="469.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="60.0" layoutX="741.0" layoutY="452.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
+      <Label fx:id="labelSlider" layoutX="755.0" layoutY="469.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="830.0" layoutY="452.0" mnemonicParsing="false" onAction="#setRaio" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #3A994C; -fx-border-color: white; -fx-border-width: 2;" text="DEFINIR RAIO" textFill="WHITE">
+         <font>
+            <Font name="Arial Black" size="22.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

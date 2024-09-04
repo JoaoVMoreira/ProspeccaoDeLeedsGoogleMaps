@@ -1,12 +1,11 @@
 package br.com.moreira.googleMapsLeeds.service;
 
-import br.com.moreira.googleMapsLeeds.DTO.NearbySearchDTO;
-import br.com.moreira.googleMapsLeeds.DTO.NextPageDTO;
-import br.com.moreira.googleMapsLeeds.DTO.PlaceDetailsDTO;
+import br.com.moreira.googleMapsLeeds.DTO.*;
 import br.com.moreira.googleMapsLeeds.model.ComerciosTransicaoModel;
 import br.com.moreira.googleMapsLeeds.view.ConfigViewController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -19,15 +18,20 @@ import java.util.stream.Collectors;
 public class ServiceMapsAPI {
 
     private ObjectMapper mapper = new ObjectMapper();
-    private String apiKey = ConfigViewController.apiKey;
+    private String apiKey;
+    private int raio;
+    File apiKeyFile = new File("C:\\\\Users\\\\jvitt\\\\Documents\\\\ProspecLeedsGoogleMaps\\GoogleMapsLeeds\\src\\main\\java\\br\\com\\moreira\\googleMapsLeeds\\json\\apiKey.json");
+    File raioFile = new File("C:\\\\Users\\\\jvitt\\\\Documents\\\\ProspecLeedsGoogleMaps\\GoogleMapsLeeds\\src\\main\\java\\br\\com\\moreira\\googleMapsLeeds\\json\\raio.json");
 //AIzaSyATIq7TrwrW34WT2PHwwuwdm7yokPCKYeA
     public String formatCoord(String coord){
         return coord.replace(" ", "");
     }
     public List<String> NearbySearch(String location) throws IOException, InterruptedException {
+        apiKey = mapper.readValue(apiKeyFile, ApiKeyDTO.class).getApiKey();
+        raio = mapper.readValue(raioFile, RaioDTO.class).getRaio();
         HttpClient client = HttpClient.newBuilder().build();
         String formatedLocation = formatCoord(location);
-        String requestLink = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+formatedLocation+"&radius=1000&key=" + apiKey;
+        String requestLink = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+formatedLocation+"&radius="+raio+"&key=" + apiKey;
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(requestLink))
@@ -35,9 +39,11 @@ public class ServiceMapsAPI {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         String firstResultNextPage = mapper.readValue(response.body(), NextPageDTO.class).getNextPage();
         NearbySearchDTO firstResultNearbySearch = mapper.readValue(response.body(), NearbySearchDTO.class);
+
         return NextPage(firstResultNextPage, client, firstResultNearbySearch);
     }
     public List<String> NextPage(String responseFirstNextPage, HttpClient client, NearbySearchDTO resultFistPage) throws IOException, InterruptedException {
+        apiKey = mapper.readValue(apiKeyFile, ApiKeyDTO.class).getApiKey();
         List<String> placesIdList = new ArrayList<>();
         placesIdList.addAll(resultFistPage.getResult().stream()
                 .map(NearbySearchDTO.Result::getPlace_id)
@@ -62,6 +68,7 @@ public class ServiceMapsAPI {
     }
     public ComerciosTransicaoModel PlaceDetails(String data){
         try{
+            apiKey = mapper.readValue(apiKeyFile, ApiKeyDTO.class).getApiKey();
             HttpClient client = HttpClient.newBuilder().build();
             String linkHttp = "https://maps.googleapis.com/maps/api/place/details/json?place_id="+data+"&key=" + apiKey;
             HttpRequest request = HttpRequest.newBuilder()

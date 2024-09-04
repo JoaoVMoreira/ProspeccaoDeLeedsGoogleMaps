@@ -1,7 +1,6 @@
 package br.com.moreira.googleMapsLeeds.service;
 
 import br.com.moreira.googleMapsLeeds.DTO.*;
-import br.com.moreira.googleMapsLeeds.view.ConfigViewController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.EntityManagerFactory;

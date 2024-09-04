@@ -25,6 +25,7 @@ public class Main extends Application {
             configScene = new Scene(fxmlConfig);
 
             primaryStage.setTitle("My Application");
+            primaryStage.setResizable(false);
             primaryStage.setScene(homeScene);
             primaryStage.show();
         } catch (IOException e) {
