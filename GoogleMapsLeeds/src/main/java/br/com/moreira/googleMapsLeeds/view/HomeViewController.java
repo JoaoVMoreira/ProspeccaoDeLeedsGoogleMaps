@@ -9,7 +9,9 @@ import br.com.moreira.googleMapsLeeds.controller.ControllerWhatsAppAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -79,7 +81,7 @@ public class HomeViewController implements Initializable {
         searchLocalThread.start();
     }
     @FXML
-    private void deleteItem(){
+    private void deleteItem() throws IOException {
         List<ComerciosTransicaoDTO> selectedItens = tableCommerce.getSelectionModel().getSelectedItems();
         transicaoController.deleteItens(selectedItens);
         preencherTable();
@@ -95,15 +97,16 @@ public class HomeViewController implements Initializable {
         alertWarning.showAndWait();
     }
     @FXML
-    void moveToMainDB(){
+    private void moveToMainDB() throws IOException {
         controllerComercios.MoveToMainCommerce();
         preencherTable();
         alertConfirmation.setTitle("Informações movidas ao DB principal");
         alertConfirmation.setContentText("Processo realizado com sucesso!");
         alertConfirmation.showAndWait();
+
     }
     @FXML
-    void keyEventController(KeyEvent event) throws IOException, InterruptedException {
+    private void keyEventController(KeyEvent event) throws IOException, InterruptedException {
         if(event.getCode() == KeyCode.DELETE){
             deleteItem();
         }
@@ -112,8 +115,16 @@ public class HomeViewController implements Initializable {
         }
     }
     @FXML
-    void configPage(){
+    private void configPage(){
         Main.changeScreen("config");
+    }
+    @FXML
+    void whatsAppPage(){
+        Main.changeScreen("whatsApp");
+    }
+    @FXML
+    private void mainDbPage(){
+        Main.changeScreen("mainDb");
     }
 
     @Override
@@ -127,7 +138,6 @@ public class HomeViewController implements Initializable {
 
 
         formatTable();
-        preencherTable();
     }
     private void formatTable(){
         tableCommerce.setRowFactory(tv -> new TableRow<ComerciosTransicaoDTO>(){

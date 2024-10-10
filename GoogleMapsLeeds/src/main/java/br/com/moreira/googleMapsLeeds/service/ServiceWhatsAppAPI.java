@@ -1,9 +1,11 @@
 package br.com.moreira.googleMapsLeeds.service;
 
 import br.com.moreira.googleMapsLeeds.DTO.*;
+import br.com.moreira.googleMapsLeeds.model.ComerciosModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.EntityManagerFactory;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -101,6 +103,24 @@ public class ServiceWhatsAppAPI {
             //Adicionar Exception tratada
         }
         return null;
+    }
+    public void sendMessage(String contato) throws IOException, InterruptedException {
+        File messageJson = new File("src\\main\\java\\br\\com\\moreira\\googleMapsLeeds\\json\\mensagem.json");
+        String message = mapper.readValue(messageJson, MessageJSON.class).getMessage();
+        String requestJson= "{\n"+"  \"chatId\": \""+contato+"@c.us\",\n"+"  \"contentType\": \"string\",\n" +"  \"content\": \""+message+"\"\n" +"}";
+
+        String linkRequest = "http://localhost:3000/client/sendMessage/testMain";
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(BodyPublishers.ofString(requestJson))
+                .header("x-api-key", "x-api-key")
+                .uri(URI.create(linkRequest))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        SendMessageDTO success = mapper.readValue(response.body(), SendMessageDTO.class);
+        if(success.getSuccess()){
+            System.out.println("Mensagem enviada com sucesso!");
+        }
     }
 
     private QrcodeDTO getQRCode() throws IOException, InterruptedException {

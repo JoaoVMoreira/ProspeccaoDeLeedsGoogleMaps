@@ -64,6 +64,14 @@ public class ConfigViewController implements Initializable {
         Main.changeScreen("home");
     }
     @FXML
+    void mainDbPage(){
+        Main.changeScreen("mainDb");
+    }
+    @FXML
+    void whatsAppPage(){
+        Main.changeScreen("whatsApp");
+    }
+    @FXML
     void testConnection() throws IOException, InterruptedException {
         boolean success = controller.testConnect();
         if(success){

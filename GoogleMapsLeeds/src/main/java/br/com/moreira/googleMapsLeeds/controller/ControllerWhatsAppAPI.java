@@ -3,6 +3,7 @@ package br.com.moreira.googleMapsLeeds.controller;
 import br.com.moreira.googleMapsLeeds.DTO.ComerciosTransicaoDTO;
 import br.com.moreira.googleMapsLeeds.DTO.QrcodeDTO;
 import br.com.moreira.googleMapsLeeds.infra.Factory;
+import br.com.moreira.googleMapsLeeds.model.ComerciosModel;
 import br.com.moreira.googleMapsLeeds.service.ServiceWhatsAppAPI;
 
 import javax.persistence.EntityManagerFactory;
@@ -31,5 +32,9 @@ public class ControllerWhatsAppAPI {
         QrcodeDTO qrCodeGen = service.startSession();
         return qrCodeGen;
     }
-
+    public void sendMessage(List<ComerciosModel> commerces) throws IOException, InterruptedException {
+        for (ComerciosModel comercio : commerces){
+            service.sendMessage(comercio.getContato());
+        }
+    }
 }
